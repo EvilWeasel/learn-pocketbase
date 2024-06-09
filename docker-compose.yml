@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+  pocketbase:
+    build:
+      context: ./pb
+      dockerfile: Dockerfile
+      args:
+        - PB_VERSION=0.22.13
+    container_name: pocketbase
+    restart: unless-stopped
+    command:
+      [
+        "/pb/pocketbase",
+        "serve",
+        "--http=0.0.0.0:8080",
+        "--encryptionEnv=PB_ENCRYPTION_KEY",
+      ]
+    environment:
+      PB_ENCRYPTION_KEY: /run/secrets/pb_encryption_key
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./pb/data:/pb_data
+      - ./pb/public:/pb_public #optional
+      - ./pb/hooks:/pb_hooks #optional
+    healthcheck: #optional (recommended) since v0.10.0
+      test:
+        wget --no-verbose --tries=1 --spider http://localhost:8090/api/health ||
+        exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    secrets:
+      - pb_encryption_key
+
+secrets:
+  pb_encryption_key:
+    file: ./pb/encryption.key

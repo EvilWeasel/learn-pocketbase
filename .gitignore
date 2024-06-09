@@ -1,0 +1,13 @@
+**/pb_data/*
+
+# astro ignores
+**/node_modules/
+**/dist/
+
+# application
+**/.env*
+
+# key files
+**/*.key
+**/*.pem
+**/*.crt
