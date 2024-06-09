@@ -1,0 +1,134 @@
+---
+import AccountMenu from "./AccountMenu.astro";
+---
+
+<nav>
+  <ul>
+    <li>
+      <img src="/logo.svg" alt="logo" />
+      <img src="/logo-dark.svg" alt="logo" />
+    </li>
+  </ul>
+  <ul class="nav-links" aria-label="navigation-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blogs">Blogs</a></li>
+    <li><a href="/courses">Courses</a></li>
+  </ul>
+  <ul>
+    <li>
+      <details class="dropdown" id="theme-switcher">
+        <summary role="button" class="outline secondary">Theme</summary>
+        <ul>
+          <li><a href="#" data-theme-switcher="auto">Auto</a></li>
+          <li><a href="#" data-theme-switcher="light">Light</a></li>
+          <li><a href="#" data-theme-switcher="dark">Dark</a></li>
+        </ul>
+      </details>
+    </li>
+  </ul>
+  <ul>
+    <AccountMenu />
+  </ul>
+</nav>
+
+<script defer>
+  /*!
+   * Minimal theme switcher
+   *
+   * Pico.css - https://picocss.com
+   * Copyright 2019-2024 - Licensed under MIT
+   */
+
+  const themeSwitcher = {
+    // Config
+    _scheme: "auto",
+    menuTarget: "details.dropdown",
+    buttonsTarget: "a[data-theme-switcher]",
+    buttonAttribute: "data-theme-switcher",
+    rootAttribute: "data-theme",
+    localStorageKey: "picoPreferredColorScheme",
+
+    // Init
+    init() {
+      this.scheme = this.schemeFromLocalStorage;
+      this.initSwitchers();
+    },
+
+    // Get color scheme from local storage
+    get schemeFromLocalStorage() {
+      return window.localStorage?.getItem(this.localStorageKey) ?? this._scheme;
+    },
+
+    // Preferred color scheme
+    get preferredColorScheme() {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    },
+
+    // Init switchers
+    initSwitchers() {
+      const buttons = document.querySelectorAll(this.buttonsTarget);
+      buttons.forEach((button) => {
+        button.addEventListener(
+          "click",
+          (event) => {
+            event.preventDefault();
+            // Set scheme
+            this.scheme = button.getAttribute(this.buttonAttribute);
+            // Close dropdown
+            document.querySelector(this.menuTarget)?.removeAttribute("open");
+          },
+          false
+        );
+      });
+    },
+
+    // Set scheme
+    set scheme(scheme) {
+      if (scheme == "auto") {
+        this._scheme = this.preferredColorScheme;
+      } else if (scheme == "dark" || scheme == "light") {
+        this._scheme = scheme;
+      }
+      this.applyScheme();
+      this.schemeToLocalStorage();
+    },
+
+    // Get scheme
+    get scheme() {
+      return this._scheme;
+    },
+
+    // Apply scheme
+    applyScheme() {
+      document
+        .querySelector("html")
+        ?.setAttribute(this.rootAttribute, this.scheme);
+    },
+
+    // Store scheme to local storage
+    schemeToLocalStorage() {
+      window.localStorage?.setItem(this.localStorageKey, this.scheme);
+    },
+  };
+  document.addEventListener("astro:page-load", () => {
+    // Init
+    themeSwitcher.init();
+  });
+</script>
+
+<style>
+  html[data-theme="dark"] img[src="/logo-dark.svg"] {
+    display: block;
+  }
+  html[data-theme="dark"] img[src="/logo.svg"] {
+    display: none;
+  }
+  html[data-theme="light"] img[src="/logo-dark.svg"] {
+    display: none;
+  }
+  html[data-theme="light"] img[src="/logo.svg"] {
+    display: block;
+  }
+</style>

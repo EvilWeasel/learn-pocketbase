@@ -1,0 +1,43 @@
+<details class="account-dropdown">
+  <summary class="account-image" id="account-image">
+    <img src="https://picsum.photos/100/100" alt="profile-picture" />
+  </summary>
+  <ul class="menu" dir="rtl">
+    <li><a href="/">Account</a></li>
+    <li><a href="/">Logout</a></li>
+  </ul>
+</details>
+
+<style>
+  details.account-dropdown {
+    width: 15ch;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+  details > summary {
+    margin-bottom: 0;
+  }
+  img {
+    border-radius: 50%;
+    max-height: 2rem;
+    max-width: 2rem;
+  }
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background-color: rgba(7, 67, 163, 0.193);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    position: absolute;
+    left: 0;
+    height: fit-content;
+    margin-top: 1rem;
+  }
+  summary::after {
+    display: none;
+  }
+</style>
