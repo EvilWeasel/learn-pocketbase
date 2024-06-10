@@ -1,7 +1,22 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PocketBase from "pocketbase";
+const pb = new PocketBase("https://pb.sequelweasel.dev/");
+let records;
+try {
+  // you can also fetch all records at once via getFullList
+  records = await pb.collection("users").getFullList({
+    sort: "-created",
+  });
+  console.log("records: ", records);
+} catch (error) {
+  console.error("PB_ERROR: ", error);
+}
 ---
 
 <Layout title="Courses">
-    <h1>Courses</h1>
+  <h1>Courses</h1>
+  <ul>
+    {records!.map((record) => <li>{record.name}</li>)}
+  </ul>
 </Layout>

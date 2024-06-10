@@ -20,9 +20,9 @@ services:
     ports:
       - "8090:8080"
     volumes:
-      - ./pb/data:/pb_data
-      - ./pb/public:/pb_public #optional
-      - ./pb/hooks:/pb_hooks #optional
+      - ./pb/data:/pb/pb_data
+      - ./pb/public:/pb/pb_public #optional
+      - ./pb/hooks:/pb/pb_hooks #optional
     healthcheck: #optional (recommended) since v0.10.0
       test:
         wget --no-verbose --tries=1 --spider http://localhost:8090/api/health ||

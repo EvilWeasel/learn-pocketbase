@@ -1,7 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PocketBase from "pocketbase";
+const pb = new PocketBase("https://pb.sequelweasel.dev");
+const records = await pb.collection("articles").getFullList({
+  sort: "-created",
+});
+console.log(records);
 ---
 
 <Layout title="Blogs">
-    <h1>Blogs</h1>
+  <h1>Blogs</h1>
+  {
+    records.map((record) => (
+      <article>
+        <h2>{record.title}</h2>
+        <p>{record.content}</p>
+      </article>
+    ))
+  }
 </Layout>

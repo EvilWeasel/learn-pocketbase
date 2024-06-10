@@ -3,12 +3,16 @@
     <img src="https://picsum.photos/100/100" alt="profile-picture" />
   </summary>
   <ul class="menu" dir="rtl">
+    <p>accountname</p>
     <li><a href="/">Account</a></li>
     <li><a href="/">Logout</a></li>
   </ul>
 </details>
 
 <style>
+  p {
+    margin: 5px;
+  }
   details.account-dropdown {
     width: 15ch;
     position: relative;
@@ -36,6 +40,7 @@
     left: 0;
     height: fit-content;
     margin-top: 1rem;
+    z-index: 1;
   }
   summary::after {
     display: none;
